@@ -98,6 +98,19 @@
             font-family: 'Segoe UI', Tahoma;
         }
 
+        /* لوحة التنبيه بأن الموقع مغلق */
+        .lock-notice {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
         /* تنسيق حقول الإدخال */
         .form-panel {
             background: #fcfcfc;
@@ -217,7 +230,7 @@
         </div>
 
         <div class="countdown-panel">
-            <div class="countdown-title">الوقت المتبقي لفتح الموقع رسمياً وإعلان النتائج:</div>
+            <div class="countdown-title" id="main-title">الوقت المتبقي لفتح الموقع رسمياً وإعلان النتائج:</div>
             <div class="countdown-timer">
                 <div class="time-box">
                     <div class="time-num" id="seconds">00</div>
@@ -238,7 +251,11 @@
             </div>
         </div>
 
-        <div class="form-panel">
+        <div class="lock-notice" id="status-notice">
+            🔒 نظام استظهار النتائج مغلق حالياً. يرجى الانتظار حتى نهاية العد التنازلي لفتح السيرفر.
+        </div>
+
+        <div class="form-panel" id="auth-form" style="display: none;">
             <div class="field-group">
                 <label for="user_id">رقم التسجيل (إسم المستخدم):</label>
                 <input type="text" id="user_id" placeholder="أدخل رقم التسجيل">
@@ -314,9 +331,10 @@
             document.getElementById("captcha-text").innerText = num1 + " + " + num2 + " = ؟";
         }
 
-        // إعداد وتحديث العداد التنازلي التلقائي ليوم 15 جوان 2026
+        // دالة العداد التي تتحكم في قفل وفتح الموقع
         function initCountdown() {
-            var targetDate = new Date("June 15, 2026 16:00:00").getTime();
+            // ضبط الموعد الرسمي: 15 جوان 2026 على الساعة 10:00 صباحاً
+            var targetDate = new Date("June 15, 2026 10:00:00").getTime();
 
             var timerInterval = setInterval(function() {
                 var now = new Date().getTime();
@@ -332,13 +350,22 @@
                 document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
                 document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
 
-                if (difference < 0) {
+                // حالة 1: العداد مازال يشتغل (الموقع مقفل)
+                if (difference > 0) {
+                    document.getElementById("status-notice").style.display = "block";
+                    document.getElementById("auth-form").style.display = "none";
+                } 
+                // حالة 2: انتهى العداد (يفتح الموقع فوراً وتظهر الخانات تلقائياً)
+                else {
                     clearInterval(timerInterval);
                     document.getElementById("days").innerText = "00";
                     document.getElementById("hours").innerText = "00";
                     document.getElementById("minutes").innerText = "00";
                     document.getElementById("seconds").innerText = "00";
-                    document.querySelector(".countdown-title").innerText = "تم إعلان النتائج الآن رسمياً!";
+                    
+                    document.getElementById("main-title").innerText = "تم فتح الموقع وإعلان النتائج رسمياً!";
+                    document.getElementById("status-notice").style.display = "none"; // إخفاء رسالة القفل
+                    document.getElementById("auth-form").style.display = "block";   // إظهار استمارة الدخول
                 }
             }, 1000);
         }
