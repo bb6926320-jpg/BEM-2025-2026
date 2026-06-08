@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموقع الرسمي لإعلان نتائج شهادة التعليم المتوسط 2026</title>
+    <style>
+        /* التصميم الرسمي الكلاسيكي لموقع الوزارة */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fa;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .main-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        .gov-header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .gov-header h1 {
+            font-size: 18px;
+            margin: 5px 0;
+            color: #111;
+        }
+
+        .gov-header h2 {
+            font-size: 16px;
+            margin: 5px 0;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .gov-header h3 {
+            font-size: 16px;
+            color: #004d40;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* تنسيق حقول الإدخال */
+        .form-panel {
+            background: #fcfcfc;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .field-group {
+            margin-bottom: 15px;
+        }
+
+        .field-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .field-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-size: 15px;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        .captcha-box {
+            background: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            border: 1px dashed #999;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #004d40;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #00332c;
+        }
+
+        /* صفحة النتيجة (مخفية في البداية) */
+        #result-panel {
+            display: none;
+        }
+
+        /* الجدول الرسمي لعرض البيانات والنتيجة */
+        .official-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .official-table th, .official-table td {
+            border: 1px solid #666;
+            padding: 12px;
+            text-align: right;
+            font-size: 15px;
+        }
+
+        .official-table th {
+            background-color: #f2f2f2;
+            width: 35%;
+            color: #000;
+        }
+
+        .official-table td {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .result-highlight {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* أزرار الإجراءات للطباعة */
+        .actions {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .btn-print {
+            padding: 10px 25px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container" id="login-panel">
+        <div class="gov-header">
+            <h1>الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+            <h2>وزارة التربية الوطنية</h2>
+            <h3>الديوان الوطني للامتحانات والمسابقات</h3>
+            <p style="font-size: 14px; margin: 10px 0 0 0;">نتائج امتحان شهادة التعليم المتوسط (دورة جوان 2026)</p>
+        </div>
+
+        <div class="form-panel">
+            <div class="field-group">
+                <label for="user_id">رقم التسجيل (إسم المستخدم):</label>
+                <input type="text" id="user_id" placeholder="أدخل رقم التسجيل">
+            </div>
+
+            <div class="field-group">
+                <label for="user_pass">الرقم السري (كلمة المرور):</label>
+                <input type="password" id="user_pass" placeholder="أدخل الرقم السري">
+            </div>
+
+            <div class="field-group">
+                <label>الإجابة على العملية الحسابية الحماية:</label>
+                <div class="captcha-box" id="captcha-text">0 + 0 = ؟</div>
+                <input type="number" id="user_captcha" placeholder="أدخل ناتج الحساب هنا">
+            </div>
+
+            <button class="btn-submit" onclick="validateUser()">استظهار النتيجة</button>
+        </div>
+    </div>
+
+
+    <div class="main-container" id="result-panel">
+        <div class="gov-header">
+            <h1>الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+            <h2>وزارة التربية الوطنية</h2>
+            <h3>كشف نتيجة مترشح لشهادة التعليم المتوسط</h3>
+        </div>
+
+        <div class="form-panel" id="score-input-zone" style="background: #f9f9f9; border: 1px dashed #999;">
+            <div class="field-group" style="margin-bottom: 10px;">
+                <label for="student_score" style="color: #004d40;">أدخل المعدل المطلوب لعرضه في الكشف الرسمي:</label>
+                <input type="number" id="student_score" step="0.01" min="0" max="20" placeholder="00.00" style="font-family: inherit;">
+            </div>
+            <button class="btn-submit" style="background-color: #333;" onclick="generateOfficialReport()">توليد الكشف الرسمي</button>
+        </div>
+
+        <table class="official-table" id="report-table" style="display: none;">
+            <tr>
+                <th>رقم التسجيل:</th>
+                <td id="res-id"></td>
+            </tr>
+            <tr>
+                <th>اللقب والاسم:</th>
+                <td>باسين رامي أمين</td>
+            </tr>
+            <tr>
+                <th>الفوج التربوي:</th>
+                <td>رابعة متوسط 04</td>
+            </tr>
+            <tr>
+                <th>المعدل المتحصل عليه:</th>
+                <td id="res-score" style="font-family: monospace; font-weight: bold;"></td>
+            </tr>
+            <tr>
+                <th>النتيجة والملاحظة:</th>
+                <td id="res-status" class="result-highlight"></td>
+            </tr>
+        </table>
+
+        <div class="actions" id="action-zone" style="display: none;">
+            <button class="btn-print" onclick="window.print()">طباعة الوثيقة</button>
+        </div>
+    </div>
+
+
+    <script>
+        // متغيرات لتخزين أرقام العملية الحسابية تلقائياً
+        var num1, num2, correctAns;
+
+        // دالة لتوليد عملية حسابية عشوائية سهلة عند تحميل الصفحة
+        function generateCaptcha() {
+            num1 = Math.floor(Math.random() * 10) + 1; // رقم من 1 إلى 10
+            num2 = Math.floor(Math.random() * 10) + 1; // رقم من 1 إلى 10
+            correctAns = num1 + num2;
+            document.getElementById("captcha-text").innerText = num1 + " + " + num2 + " = ؟";
+        }
+
+        // تشغيل توليد العملية الحسابية فوراً عند فتح الموقع
+        window.onload = generateCaptcha;
+
+        function validateUser() {
+            var inputUser = document.getElementById("user_id").value.trim();
+            var inputPass = document.getElementById("user_pass").value.trim();
+            var inputCaptcha = document.getElementById("user_captcha").value.trim();
+
+            var correctUser = "1001017313215600";
+            var correctPass = "WsMFgUs8";
+
+            // 1. التحقق من اسم المستخدم وكلمة المرور
+            if (inputUser !== correctUser || inputPass !== correctPass) {
+                alert("معلومات الدخول خاطئة! يرجى إعادة إدخال البيانات المكتوبة في الوصل الرسمي.");
+                generateCaptcha(); // تغيير العملية الحسابية للأمان
+                return;
+            }
+
+            // 2. التحقق من حل العملية الحسابية
+            if (inputCaptcha === "") {
+                alert("يرجى حل العملية الحسابية أولاً.");
+                return;
+            }
+
+            if (parseInt(inputCaptcha) !== correctAns) {
+                alert("إجابة العملية الحسابية خاطئة! يرجى المحاولة مجدداً.");
+                generateCaptcha(); // تغيير العملية الحسابية
+                return;
+            }
+
+            // إذا كانت كل البيانات والعملية صحيحة، يفتح الكشف
+            document.getElementById("login-panel").style.display = "none";
+            document.getElementById("result-panel").style.display = "block";
+        }
+
+        function generateOfficialReport() {
+            var scoreVal = document.getElementById("student_score").value;
+            
+            if (scoreVal === "") {
+                alert("يرجى إدخال المعدل أولاً.");
+                return;
+            }
+
+            var score = parseFloat(scoreVal);
+
+            if (score < 0 || score > 20) {
+                alert("المعدل يجب أن يكون بين 00.00 و 20.00");
+                return;
+            }
+
+            document.getElementById("res-id").innerText = "1001017313215600";
+            document.getElementById("res-score").innerText = score.toFixed(2) + " / 20";
+
+            var statusTd = document.getElementById("res-status");
+            if (score >= 10) {
+                statusTd.innerText = "ناجح (ة) في الامتحان ويوجّه إلى الطور الثانوي";
+            } else {
+                statusTd.innerText = "مترشح(ة) لم يحصل على معدل النجاح (راسب)";
+            }
+
+            document.getElementById("score-input-zone").style.display = "none";
+            document.getElementById("report-table").style.display = "table";
+            document.getElementById("action-zone").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
