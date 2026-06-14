@@ -333,8 +333,8 @@
 
         // دالة العداد التي تتحكم في قفل وفتح الموقع
         function initCountdown() {
-            // ضبط الموعد الرسمي: 15 جوان 2026 على الساعة 10:00 صباحاً
-            var targetDate = new Date("June 15, 2026 10:00:00").getTime();
+            // تم تعديل التاريخ ليكون 14 جوان بدلاً من 15 جوان (نقصنا يوم)
+            var targetDate = new Date("June 14, 2026 10:00:00").getTime();
 
             var timerInterval = setInterval(function() {
                 var now = new Date().getTime();
